@@ -12,4 +12,6 @@ public class TroopController : MonoBehaviour {
 	void Update () {
 		
 	}
+
+
 }
