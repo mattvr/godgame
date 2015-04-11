@@ -6,11 +6,11 @@ public class BoardObject : MonoBehaviour {
 	public bool destructible;	// Can I be destroyed?
 	public bool active; 		// Do I go places and slay things?
 
-	public float toughness;  // 0-1.0 for strong you are
-	public float damage; 	 // 0-1.0 for how much you take away from the toughness of who you're attacking
+	public float toughness;  	// 0-1.0 for strong you are
+	public float damage; 	 	// 0-1.0 for how much you take away from the toughness of who you're attacking
 
-	public float movementSpeed = 2;
-	public Vector3 direction = Vector3.forward;
+	public float movementSpeed = 0;
+	public Vector3 direction = Vector3.forward; 
 	
 	public float detectRange = 5;
 	public float attackRange = 1;
@@ -19,12 +19,7 @@ public class BoardObject : MonoBehaviour {
 	public States state;
 	
 	// Use this for initialization
-	void Start () {
-		this.destructible = true;
-		this.state = States.moving;
-		this.toughness = 1.0F;
-		this.damage = 1.0F;
-	}
+	void Start () {}
 	
 	void Update(){
 		Vector3 fwd = transform.TransformDirection(direction);
@@ -39,7 +34,9 @@ public class BoardObject : MonoBehaviour {
 			BoardObject opponent = (BoardObject) hit.collider.gameObject.GetComponent("BoardObject");
 			this.attack(opponent);
 		} else { // Only move if not attacking
-			transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
+			if (this.active) {
+				transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
+			}
 		}
 		print (state);
 	}
@@ -48,6 +45,9 @@ public class BoardObject : MonoBehaviour {
 		// imagine my damage is 0.1 and the opponents toughness is 0.9
 		float attack = Random.Range (0.0F, 1.0F) + damage;
 		print (attack);
+		print (damage);
+		print (toughness);
+
 		if (opponent.toughness < attack) {
 			opponent.die ();
 		}
