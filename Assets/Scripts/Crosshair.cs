@@ -22,9 +22,15 @@ public class Crosshair : MonoBehaviour {
 			CrosshairSprite.transform.position = hit.point;
 
 			var go = hit.collider.gameObject;
-
 			var lookable = go.GetComponent<ILookable>();
-			if (lookable == null) return;
+
+			// Object we're looking at is not a lookable object.
+			if (lookable == null) {
+				Fill (0);
+				timeLooking = 0;
+				fireActivated = false;
+				return;
+			}
 
 			// Stop looking at previous object
 			if (lookable != LastLookingAt && LastLookingAt != null) {
@@ -35,6 +41,7 @@ public class Crosshair : MonoBehaviour {
 			}
 			else if (LastLookingAt == null) {
 				timeLooking = 0;
+				fireActivated = false;
 				lookable.StartLooking(gameObject);
 			}
 
@@ -58,10 +65,13 @@ public class Crosshair : MonoBehaviour {
 			fireActivated = false;
 			LastLookingAt = null;
 		}
+		else {
+			Fill (0);
+		}
 	}
 
 	void Fill(float n) {
-			FillSprite.material.SetFloat("_DissolveAmount", 1 - n);
+		FillSprite.material.SetFloat("_DissolveAmount", 1 - n);
 	}
 
 }
