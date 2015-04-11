@@ -17,10 +17,10 @@ public class Card : MonoBehaviour {
 
 	void LookingAt(GameObject looker) {
 		var dest = Vector3.Lerp(_startPos, looker.transform.position, 0.33f);
-
+		iTween.MoveTo(gameObject, dest, 0.5f);
 	}
 
 	void StopLookingAt() {
-		transform.position = _startPos;
+		iTween.MoveTo(gameObject, _startPos, 0.5f);
 	}
 }
