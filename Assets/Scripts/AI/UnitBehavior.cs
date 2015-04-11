@@ -5,6 +5,9 @@ public class UnitBehavior : MonoBehaviour {
 	
 	public float movementSpeed = 1;
 	public Vector3 direction = Vector3.forward;
+	
+	public float detectRange = 5;
+	public float attackRange = 1;
 
 	public enum States {moving, detected, attacking};
 	public States state;
@@ -18,16 +21,16 @@ public class UnitBehavior : MonoBehaviour {
 		Vector3 fwd = transform.TransformDirection(direction);
 
 		state = States.moving;
-		if (Physics.Raycast (transform.position, fwd, 5)) {
+		if (Physics.Raycast (transform.position, fwd, detectRange)) {
 			print ("I see you!");
 			state = States.detected;
 		}
-		if (Physics.Raycast (transform.position, fwd, 1)) {
+		if (Physics.Raycast (transform.position, fwd, attackRange)) {
 			print ("AARGH!");
 			state = States.attacking;
-		} 
-
+		} else { // Only move if not attacking
+			transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
+		}
 		print (state);
-		transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
 	}
 }
