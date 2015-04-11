@@ -3,8 +3,12 @@ using System.Collections;
 
 public class Crosshair : MonoBehaviour {
 
+	// Set via inspector
 	public GameObject CrosshairSprite;
 	public Renderer FillSprite;
+	public GameObject Placer;
+	public GameObject Hand;
+
 	private Vector3 _startPos;
 	private ILookable LastLookingAt;
 	private float timeLooking = 0f;
@@ -28,6 +32,10 @@ public class Crosshair : MonoBehaviour {
 		}
 		else {
 			Look (null);
+		}
+
+		if (Input.GetKeyDown(KeyCode.F)) {
+			HidePlacer();
 		}
 	}
 
@@ -58,8 +66,8 @@ public class Crosshair : MonoBehaviour {
 			lookable.Looking(gameObject);
 			// Fire activation
 			if (!fireActivated && timeLooking > lookable.TimeToActivate) {
-				lookable.Activate(gameObject);
-				fireActivated = true;
+				Activate(lookable);
+				LastLookingAt = null;
 			}
 			else {
 				fill = timeLooking / lookable.TimeToActivate;
@@ -72,4 +80,17 @@ public class Crosshair : MonoBehaviour {
 		FillSprite.material.SetFloat("_DissolveAmount", 1 - n);
 	}
 
+	void Activate(ILookable lookable) {
+		lookable.Activate(gameObject);
+		fireActivated = true;
+		ShowPlacer();
+	}
+
+	public void ShowPlacer() {
+		Placer.SetActive(true);
+	}
+
+	public void HidePlacer() {
+		Placer.SetActive(false);
+	}
 }
