@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnitBehavior : MonoBehaviour {
+public class ObjectBehavior : MonoBehaviour {
 	
 	public float movementSpeed = 1;
 	public Vector3 direction = Vector3.forward;
