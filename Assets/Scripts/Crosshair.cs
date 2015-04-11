@@ -24,50 +24,48 @@ public class Crosshair : MonoBehaviour {
 			var go = hit.collider.gameObject;
 			var lookable = go.GetComponent<ILookable>();
 
-			// Object we're looking at is not a lookable object.
-			if (lookable == null) {
-				Fill (0);
-				timeLooking = 0;
-				fireActivated = false;
-				return;
-			}
-
-			// Stop looking at previous object
-			if (lookable != LastLookingAt && LastLookingAt != null) {
-				LastLookingAt.StopLooking(gameObject);
-				timeLooking = 0;
-				fireActivated = false;
-				lookable.StartLooking(gameObject);
-			}
-			else if (LastLookingAt == null) {
-				timeLooking = 0;
-				fireActivated = false;
-				lookable.StartLooking(gameObject);
-			}
-
-			// Activate if enough time has passed
-			timeLooking += Time.deltaTime;
-			if (!fireActivated && timeLooking > lookable.TimeToActivate) {
-				lookable.Activate (gameObject);
-				fireActivated = true;
-			}
-
-			// Update variables
-			Fill (timeLooking / lookable.TimeToActivate);
-			LastLookingAt = lookable;
-			LastLookingAt.Looking(gameObject);
+			Look (lookable);
 		}
-		// Not looking at anything
-		else if (LastLookingAt != null) {
-			Fill (0);
+		else {
+			Look (null);
+		}
+	}
+
+	void Look(ILookable lookable) {
+		float fill = 0;
+
+		// Looking at nothing
+		if (lookable == null) {
 			timeLooking = 0;
-			LastLookingAt.StopLooking(gameObject);
+			if (LastLookingAt != null)
+				LastLookingAt.StopLooking(gameObject);
 			fireActivated = false;
 			LastLookingAt = null;
 		}
+		// Looking at something
 		else {
-			Fill (0);
+			timeLooking += Time.deltaTime;
+
+			// Changed what we're looking at
+			if (LastLookingAt != lookable) {
+				if (LastLookingAt != null)
+					LastLookingAt.StopLooking(gameObject);
+				fireActivated = false;
+				lookable.StartLooking(gameObject);
+			}
+			
+			LastLookingAt = lookable;
+			lookable.Looking(gameObject);
+			// Fire activation
+			if (!fireActivated && timeLooking > lookable.TimeToActivate) {
+				lookable.Activate(gameObject);
+				fireActivated = true;
+			}
+			else {
+				fill = timeLooking / lookable.TimeToActivate;
+			}
 		}
+		Fill (fill);
 	}
 
 	void Fill(float n) {
