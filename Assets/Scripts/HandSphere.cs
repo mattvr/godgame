@@ -21,6 +21,17 @@ public class HandSphere : MonoBehaviour {
 	void Update () {
 		var player = KinectStream.Instance.getPlayer();
 
+		if (Input.GetButton("Fire2")) {
+			print ("SPAWN ME BABY!");
+
+			GameObject unit = (GameObject)Resources.Load("Prefabs/Unit/archer");
+
+			print (unit);
+			Instantiate (unit, new Vector3 (0,0,0.5f), Quaternion.identity); 
+			unit.GetComponent<BoardObject>().direction = Vector3.forward;
+
+		}
+
 		if (player != null)
 			this.transform.localPosition = player.getJoint(11);
 
@@ -42,6 +53,7 @@ public class HandSphere : MonoBehaviour {
 		else {
 			GroundIndicator.SetActive(false);
 			Line.gameObject.SetActive(false);
+			StopCoroutine(HitGround());
 			hitGround = false;
 		}
 	}
@@ -49,6 +61,8 @@ public class HandSphere : MonoBehaviour {
 	IEnumerator HitGround() { 
 		yield return new WaitForSeconds(2.1f);
 		SpawnPool.Instance.Spawn(R.GetCachedResource(ThingToSpawn));
+		// Place unit here
+		print ("hit me baby one more time");
 		gameObject.SetActive(false);
 	}
 
