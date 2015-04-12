@@ -39,11 +39,11 @@ public class NetworkController : MonoBehaviour {
 		var ply = go.GetComponent<Player>();
 		if (IsRightPlayer) {
 			ply.Self = true;
-			var sc = ply.transform.localScale;
-			var pos = ply.transform.position;
-			ply.transform.parent = Camera.main.transform;
-			ply.transform.localScale = sc;
-			ply.transform.position = ply.transform.position;
+			var sc = go.transform.localScale;
+			var pos = go.transform.position;
+			go.transform.parent = Camera.main.transform;
+			go.transform.localScale = sc;
+			go.transform.position = pos;
 		}
 		ply.Init();
 		
