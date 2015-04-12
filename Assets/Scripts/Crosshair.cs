@@ -58,6 +58,7 @@ public class Crosshair : MonoBehaviour {
 			if (LastLookingAt != lookable) {
 				if (LastLookingAt != null)
 					LastLookingAt.StopLooking(gameObject);
+				timeLooking = 0;
 				fireActivated = false;
 				lookable.StartLooking(gameObject);
 			}
