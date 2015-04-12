@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class HandSphere : MonoBehaviour {
@@ -42,8 +42,9 @@ public class HandSphere : MonoBehaviour {
 		}
 	}
 
-	IEnumerator HitGround() {
+	IEnumerator HitGround() { 
 		yield return new WaitForSeconds(1.1f);
+		print ("Hit Ground");
 		gameObject.SetActive(false);
 	}
 
