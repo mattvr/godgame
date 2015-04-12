@@ -17,6 +17,8 @@ public class BoardObject : MonoBehaviour {
 	
 	public enum States {moving, detected, attacking, stopped};
 	public States state;
+
+	IEnumerator attacking;
 	
 	// Use this for initialization
 	void Start () {}
@@ -34,21 +36,31 @@ public class BoardObject : MonoBehaviour {
 			state = States.attacking;
 			print (state);
 			BoardObject opponent = (BoardObject) hit.collider.gameObject.GetComponent("BoardObject");
-			this.attack(opponent);
+
+			// in range
+			// start attacking the enemy
+			attacking = Attack (opponent);
+			StartCoroutine(attacking); // repeatedly calls Attack on target
 		} else { // Only move if not attacking
 			if (this.active) {
 				transform.Translate(direction * movementSpeed * Time.deltaTime);
+				StopCoroutine(attacking);
 			}
 		}
 	}
 
-	public void attack(BoardObject opponent) {
-		// imagine my damage is 0.1 and the opponents toughness is 0.9
-		float attack = Random.Range (0.0F, 1.0F) + damage;
-
-		if (opponent.toughness < attack) {
-			opponent.die ();
+	IEnumerator Attack(BoardObject opponent) {
+		while (opponent) {
+			yield return new WaitForSeconds(1f); // each loop, wait for 1 second before continuing
+	
+			// imagine my damage is 0.1 and the opponents toughness is 0.9
+			float attack = Random.Range (0.0F, 1.0F) + damage;
+			
+			if (opponent.toughness < attack) {
+				opponent.die ();
+			}
 		}
+		// done
 	}
 	
 	public void die() {
