@@ -24,7 +24,9 @@ public class HandSphere : MonoBehaviour {
 			GameObject unit = (GameObject)Resources.Load("Prefabs/Unit/archer");
 
 			print (unit);
-			Instantiate (unit, new Vector3 (0,0,0), Quaternion.identity); 
+			Instantiate (unit, new Vector3 (0,0,0.5f), Quaternion.identity); 
+			unit.GetComponent<BoardObject>().direction = Vector3.forward;
+
 		}
 
 		if (player != null)
