@@ -46,7 +46,7 @@ public class SkeletalFrame
 	public Vector3 getJoint (int jointID)
 	{
 		var vec = joints [jointID];
-		var transformed = new Vector3 (vec.x, vec.y, vec.z);
+		var transformed = new Vector3 (vec.x, vec.y, vec.z + 1.5f);
 		return transformed;
 	}
 
