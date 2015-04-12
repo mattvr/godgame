@@ -25,6 +25,7 @@ public class HandSphere : MonoBehaviour {
 
 		if (Physics.Raycast(transform.position, transform.up * -1, out hit, 10f) && hit.collider.gameObject.CompareTag("Board")) {
 			GroundIndicator.SetActive(true);
+			Line.gameObject.SetActive(true);
 			GroundIndicator.transform.position = hit.point;
 			if (!hitGround) {
 				GroundIndicator.transform.localScale = new Vector3(0.1f, 0.005f, 0.1f);
@@ -36,19 +37,23 @@ public class HandSphere : MonoBehaviour {
 		}
 		else {
 			GroundIndicator.SetActive(false);
+			Line.gameObject.SetActive(false);
 			hitGround = false;
 		}
 	}
 
-	void HitGround() {
-
+	IEnumerator HitGround() {
+		yield return new WaitForSeconds(1.1f);
+		gameObject.SetActive(false);
 	}
 
 	void OnEnable() {
-
+		GroundIndicator.SetActive(false);
+	  	Line.gameObject.SetActive(false);
 	}
 
 	void OnDisable() {
-
+		GroundIndicator.SetActive(false);
+		Line.gameObject.SetActive(false);
 	}
 }

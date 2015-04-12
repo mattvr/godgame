@@ -6,13 +6,19 @@ public class R : MonoBehaviour {
 	private static R _instance;
 	private static Dictionary<string, Object> _resources;
 	private static List<Object> Cards;
+	private static Dictionary<string, Object> Units;
 	
 	void Awake () {
 		_instance = this;
 		Cards = new List<Object>();
+		Units = new Dictionary<string, Object>();
 
 		foreach(var c in Resources.LoadAll("Prefabs/Cards")) {
 			Cards.Add(c);
+		}
+
+		foreach (var u in Resources.LoadAll("Prefabs/Units")) {
+			Units.Add(u.name, u);
 		}
 	}
 	
@@ -41,5 +47,9 @@ public class R : MonoBehaviour {
 
 	public static Object GetRandomCard() {
 		return Cards[Random.Range(0, Cards.Count)];
+	}
+
+	public static Object GetUnit(string u) {
+		return Units[u];
 	}
 }
