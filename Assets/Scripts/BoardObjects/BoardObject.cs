@@ -10,7 +10,7 @@ public class BoardObject : MonoBehaviour {
 	public float damage; 	 	// 0-1.0 for how much you take away from the toughness of who you're attacking
 
 	public float movementSpeed = 0;
-	public Vector3 direction = Vector3.forward; 
+	public Vector3 direction = Vector3.back; 
 	
 	public float detectRange = 5;
 	public float attackRange = 1;
@@ -26,27 +26,25 @@ public class BoardObject : MonoBehaviour {
 		RaycastHit hit = new RaycastHit();
 		state = States.moving;
 		
-		if (Physics.Raycast (transform.position, fwd, detectRange)) {
+		if (Physics.Raycast (transform.position, direction, detectRange)) {
 			state = States.detected;
+			print (state);
 		}
-		if (Physics.Raycast (transform.position, fwd, out hit, attackRange)) {
+		if (Physics.Raycast (transform.position, direction, out hit, attackRange)) {
 			state = States.attacking;
+			print (state);
 			BoardObject opponent = (BoardObject) hit.collider.gameObject.GetComponent("BoardObject");
 			this.attack(opponent);
 		} else { // Only move if not attacking
 			if (this.active) {
-				transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
+				transform.Translate(direction * movementSpeed * Time.deltaTime);
 			}
 		}
-		print (state);
 	}
 
 	public void attack(BoardObject opponent) {
 		// imagine my damage is 0.1 and the opponents toughness is 0.9
 		float attack = Random.Range (0.0F, 1.0F) + damage;
-		print (attack);
-		print (damage);
-		print (toughness);
 
 		if (opponent.toughness < attack) {
 			opponent.die ();
@@ -54,7 +52,7 @@ public class BoardObject : MonoBehaviour {
 	}
 	
 	public void die() {
-		print ("I'm dayin!");
+		print ("I'm dead!");
 		if (this.destructible) {
 			Destroy (gameObject);
 		}
