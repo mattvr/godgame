@@ -18,6 +18,15 @@ public class HandSphere : MonoBehaviour {
 	void Update () {
 		var player = KinectStream.Instance.getPlayer();
 
+		if (Input.GetButton("Fire2")) {
+			print ("SPAWN ME BABY!");
+
+			GameObject unit = (GameObject)Resources.Load("Prefabs/Unit/archer");
+
+			print (unit);
+			Instantiate (unit, new Vector3 (0,0,0), Quaternion.identity); 
+		}
+
 		if (player != null)
 			this.transform.localPosition = player.getJoint(11);
 
@@ -39,12 +48,15 @@ public class HandSphere : MonoBehaviour {
 		else {
 			GroundIndicator.SetActive(false);
 			Line.gameObject.SetActive(false);
+			StopCoroutine(HitGround());
 			hitGround = false;
 		}
 	}
 
 	IEnumerator HitGround() { 
 		yield return new WaitForSeconds(2.1f);
+		// Place unit here
+		print ("hit me baby one more time");
 
 		gameObject.SetActive(false);
 	}
