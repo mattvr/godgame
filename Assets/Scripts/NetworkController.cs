@@ -17,7 +17,7 @@ public class NetworkController : MonoBehaviour {
 		if (IsRightPlayer)
 			Network.InitializeServer(10, 1235, true);
 		else
-			Network.Connect("localhost", 1235);
+			Network.Connect("169.254.158.26", 1235);
 	}
 	
 	void OnServerInitialized()
