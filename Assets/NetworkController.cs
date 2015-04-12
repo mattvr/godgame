@@ -37,8 +37,17 @@ public class NetworkController : MonoBehaviour {
 	void SpawnPlayer() {
 		var go = Network.Instantiate(R.GetCachedResource("Prefabs/Player"), Vector3.zero, Quaternion.identity, 0) as GameObject;
 		var ply = go.GetComponent<Player>();
-		if (IsRightPlayer)
+		if (IsRightPlayer) {
 			ply.Self = true;
+			var sc = ply.transform.localScale;
+			var pos = ply.transform.position;
+			ply.transform.parent = Camera.main.transform;
+			ply.transform.localScale = sc;
+			ply.transform.position = ply.transform.position;
+		}
 		ply.Init();
+
+
+
 	}
 }
