@@ -25,11 +25,8 @@ public class HandSphere : MonoBehaviour {
 			print ("SPAWN ME BABY!");
 
 			GameObject unit = (GameObject)Resources.Load("Prefabs/Unit/soldier");
-
-			print (unit);
-			Instantiate (unit, new Vector3 (0,0.1F,0.5f), Quaternion.identity); 
-			unit.GetComponent<BoardObject>().direction = Vector3.forward;
-
+			Instantiate (unit, new Vector3 (0,0F,0.4f), Quaternion.AngleAxis(270, Vector3.right)); 
+			unit.GetComponent<BoardObject>().direction = new Vector3(0,-1,0);
 		}
 
 		if (player != null)
