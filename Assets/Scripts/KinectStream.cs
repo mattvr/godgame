@@ -97,48 +97,55 @@ public class KinectStream : MonoBehaviour
 		// Update is called once per frame
 		void Update ()
 		{
-				if (lastRequest.isDone) {
-						if (string.IsNullOrEmpty (lastRequest.error)) {
-								string frame = lastRequest.text;
-								processFrame (frame);
-						}
-						lastRequest = new WWW (kinectHTTP);
+			int prevCount = 0;
+			if (lastRequest.isDone) {
+					if (string.IsNullOrEmpty (lastRequest.error)) {
+							string frame = lastRequest.text;
+							processFrame (frame);
+					}
+					lastRequest = new WWW (kinectHTTP);
+			}
+			if (data.Count >= 2) {
+				if (data[0].getJoint(0).x < data[1].getJoint(1).x) {
+					var temp = data[0];
+					data[0] = data[1];
+					data[1] = temp;
 				}
-				if (data.Count > 0) {
-						Debug.Log (data [0].getJoint (0));
-				}
+			}
 		}
 
 		Vector3 parseVector3 (string inString)
 		{
-				string[] xyz = inString.Split (new char[] {','});
-				return new Vector3 (float.Parse (xyz [0]), float.Parse (xyz [1]), float.Parse (xyz [2]));
+			string[] xyz = inString.Split (new char[] {','});
+			return new Vector3 (float.Parse (xyz [0]), float.Parse (xyz [1]), float.Parse (xyz [2]));
 		}
 
 		void processFrame (string frame)
 		{
-				Debug.Log (frame);
-				List<SkeletalFrame> newdata = new List<SkeletalFrame> ();
-				string[] lines = frame.Split (new char[] { '\n' });
-				SkeletalFrame current = null;
-				for (int i=0; i<lines.Length; i++) {
-						string[] words = lines [i].Split (new char[] {' '});
-						if (words.Length != 2) {
-								continue;
-						}
-						if (words [0].Contains ("ID")) {
-								if (current != null) {
-										newdata.Add (current);
-								}
-								current = new SkeletalFrame (long.Parse (words [1]));
-						} else if (current != null) {
-								if (_JointMap.ContainsKey (words [0])) {
-										int jointIndex = _JointMap [words [0]];
-										current.joints [jointIndex] = parseVector3 (words [1]);
-								}
-						}
-				}
-				newdata.Add (current);
-				data = newdata;
+			List<SkeletalFrame> newdata = new List<SkeletalFrame> ();
+			string[] lines = frame.Split (new char[] { '\n' });
+			SkeletalFrame current = null;
+			for (int i=0; i<lines.Length; i++) {
+					string[] words = lines [i].Split (new char[] {' '});
+					if (words.Length != 2) {
+							continue;
+					}
+					if (words [0].Contains ("ID")) {
+							if (current != null) {
+									newdata.Add (current);
+							}
+							current = new SkeletalFrame (long.Parse (words [1]));
+					} else if (current != null) {
+							if (_JointMap.ContainsKey (words [0])) {
+									int jointIndex = _JointMap [words [0]];
+									current.joints [jointIndex] = parseVector3 (words [1]);
+							}
+					}
+			}
+			newdata.Add (current);
+
+			data = newdata;
 		}
+
+
 }
