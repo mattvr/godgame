@@ -4,12 +4,15 @@ using System.Collections;
 public class HandSphere : MonoBehaviour {
 
 	// Set these
+	public static HandSphere Instance;
+	
 	public GameObject GroundIndicator;
 	public LineRenderer Line;
+	public string ThingToSpawn;
 
 	// Use this for initialization
 	void Start () {
-	
+		Instance = this;
 	}
 
 	bool hitGround = false;
@@ -45,7 +48,7 @@ public class HandSphere : MonoBehaviour {
 
 	IEnumerator HitGround() { 
 		yield return new WaitForSeconds(2.1f);
-
+		SpawnPool.Instance.Spawn(R.GetCachedResource(ThingToSpawn));
 		gameObject.SetActive(false);
 	}
 

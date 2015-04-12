@@ -26,11 +26,13 @@ public class CardHand : MonoBehaviour {
 		if (Cards.Count >= 10) return;
 
 		// Create a random card
-		var go = Instantiate(R.GetRandomCard(), Vector3.zero, Quaternion.identity) as GameObject;
+		var obj = R.GetRandomCard();
+		var go = Network.Instantiate(obj, Vector3.zero, Quaternion.identity, 0) as GameObject;
 
 		// Intialize object
 		var sc = go.transform.localScale;
 		var c = go.GetComponentInChildren<Card>();
+		c.CardName = obj.name;
 		go.transform.parent = this.transform;
 //		go.transform.localPosition = Vector3.zero;
 		c.MovePos(go.transform.parent.position);
@@ -66,6 +68,7 @@ public class CardHand : MonoBehaviour {
 	public void PlayCard(Card c) {
 		Cards.Remove(c);
 		c.Remove();
-		Destroy (c.transform.parent.gameObject);
+		HandSphere.Instance.ThingToSpawn = c.CardType + "s/" + c.name;
+		Network.Destroy (c.transform.parent.gameObject);
 	}
 }

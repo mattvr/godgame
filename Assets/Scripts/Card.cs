@@ -11,6 +11,7 @@ public class Card : MonoBehaviour, ILookable {
 	public Type CardType;
 	public CardHand Hand;
 	public bool Selected = false;
+	public string CardName;
 	
 	private Vector3 defaultPos;
 
