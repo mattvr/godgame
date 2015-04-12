@@ -42,6 +42,7 @@ public class CardHand : MonoBehaviour {
 		// Add to hand
 		c.Hand = this;
 		Cards.Add(c);
+		c.Owner = true;
 		FanOutCards();
 	}
 
