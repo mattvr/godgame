@@ -58,7 +58,7 @@ public class SkeletalFrame
 
 public class KinectStream : MonoBehaviour
 {
-	public bool IsRightPlayer;
+	public bool IsRightPlayer = true;
 	int currentPlayer = -1;
 	long lastPlayerID;
 	public static KinectStream Instance;
@@ -149,7 +149,7 @@ public class KinectStream : MonoBehaviour
 
 		if (data.Count > 0) {
 			if (data.Count == 1) {
-				if (IsRightPlayer) {// one player, this player
+				if (IsRightPlayer && data[0] != null) {// one player, this player
 					lastPlayerID = data[0].bodyID;
 					currentPlayer = 0;
 				} else {//one player, not this player
@@ -225,6 +225,6 @@ public class KinectStream : MonoBehaviour
 
 	public bool certainTracking()
 	{
-		return data.Count == 1;
+		return data.Count == 1 && currentPlayer != -1;
 	}
 }
