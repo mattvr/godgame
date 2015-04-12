@@ -24,10 +24,10 @@ public class HandSphere : MonoBehaviour {
 		if (Input.GetButton("Fire2")) {
 			print ("SPAWN ME BABY!");
 
-			GameObject unit = (GameObject)Resources.Load("Prefabs/Unit/archer");
+			GameObject unit = (GameObject)Resources.Load("Prefabs/Unit/soldier");
 
 			print (unit);
-			Instantiate (unit, new Vector3 (0,0,0.5f), Quaternion.identity); 
+			Instantiate (unit, new Vector3 (0,0.1F,0.5f), Quaternion.identity); 
 			unit.GetComponent<BoardObject>().direction = Vector3.forward;
 
 		}
