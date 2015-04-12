@@ -29,7 +29,8 @@ public class HandSphere : MonoBehaviour {
 			GroundIndicator.transform.position = hit.point;
 			if (!hitGround) {
 				GroundIndicator.transform.localScale = new Vector3(0.1f, 0.005f, 0.1f);
-				iTween.ScaleTo(GroundIndicator, iTween.Hash("scale", new Vector3(1, 0.005f, 1), "time", 1f));
+				iTween.ScaleTo(GroundIndicator, iTween.Hash("scale", new Vector3(0.5, 0.005f, 0.5), "time", 2f));
+				StartCoroutine(HitGround);
 				hitGround = true;
 			}
 			Line.SetPosition(0, this.transform.position);
@@ -43,8 +44,8 @@ public class HandSphere : MonoBehaviour {
 	}
 
 	IEnumerator HitGround() { 
-		yield return new WaitForSeconds(1.1f);
-		print ("Hit Ground");
+		yield return new WaitForSeconds(2.1f);
+
 		gameObject.SetActive(false);
 	}
 
