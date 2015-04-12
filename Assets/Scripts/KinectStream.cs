@@ -59,7 +59,7 @@ public class SkeletalFrame
 public class KinectStream : MonoBehaviour
 {
 	public bool IsRightPlayer;
-	int currentPlayer;
+	int currentPlayer = -1;
 	long lastPlayerID;
 	public static KinectStream Instance;
 	public List<SkeletalFrame> data;
@@ -108,7 +108,7 @@ public class KinectStream : MonoBehaviour
 				string frame = lastRequest.text;
 				processFrame (frame);
 			} else {
-//				Debug.Log (lastRequest.error);
+				Debug.Log (lastRequest.error);
 			}
 			lastRequest = new WWW (kinectHTTP);
 		}
@@ -147,70 +147,70 @@ public class KinectStream : MonoBehaviour
 
 		data = newdata;
 
-//		if (data.Count > 0) {
-//			if (data.Count == 1) {
-//				if (IsRightPlayer) {// one player, this player
-//					lastPlayerID = data[0].bodyID;
-//					currentPlayer = 0;
-//				} else {//one player, not this player
-//					lastPlayerID = 41;//random bad id
-//					currentPlayer = -1;
-//				}
-//			} else if (data.Count == 2) {//two players
-//				if (IsRightPlayer) {//pick the right player out of two
-//					if (data[0].getJoint("Head").x > data[1].getJoint("Head").x) {//if its to the right
-//						lastPlayerID = data[0].bodyID;
-//						currentPlayer = 0;
-//					} else {
-//						lastPlayerID = data[1].bodyID;
-//						currentPlayer = 1;
-//					}
-//				} else {//pick the left player out of two
-//					if (data[0].getJoint("Head").x < data[1].getJoint("Head").x) {//if its to the left
-//						lastPlayerID = data[0].bodyID;
-//						currentPlayer = 0;
-//					} else {
-//						lastPlayerID = data[1].bodyID;
-//						currentPlayer = 1;
-//					}
-//				}
-//			} else {// more than two players
-//				bool shortCircuit = false;
-//				for (int i = 0; i < data.Count; i++) {
-//					if (data[i].bodyID == lastPlayerID) {
-//						//lastplayerid stays the same
-//						currentPlayer = i;
-//						shortCircuit = true;
-//					}
-//				}
-//				if (!shortCircuit) {
-//					int extremeBody;//index of right most or left most body
-//					float xMost;//x value of right most or left most body
-//					if (IsRightPlayer) {
-//						xMost = -9999f;
-//					} else {
-//						xMost = 9999f;
-//					}
-//					for (int i = 0; i < data.Count; i++) {//go through all bodies, pick x most
-//						if (IsRightPlayer) {
-//							if (data[i].getJoint("Head").x > xMost) {
-//								extremeBody = i;
-//								xMost = data[i].getJoint("Head");
-//							}
-//						} else {
-//							if (data[i].getJoint("Head").x < xMost) {
-//								extremeBody = i;
-//								xMost = data[i].getJoint("Head");
-//							}
-//						}
-//					}
-//					lastPlayerID = data[extremeBody].bodyID;
-//					currentPlayer = extremeBody;
-//				}
-//			}
-//		} else {
-//			currentPlayer = -1;
-//		}
+		if (data.Count > 0) {
+			if (data.Count == 1) {
+				if (IsRightPlayer) {// one player, this player
+					lastPlayerID = data[0].bodyID;
+					currentPlayer = 0;
+				} else {//one player, not this player
+					lastPlayerID = 41;//random bad id
+					currentPlayer = -1;
+				}
+			} else if (data.Count == 2) {//two players
+				if (IsRightPlayer) {//pick the right player out of two
+					if (data[0].getJoint("Head").x > data[1].getJoint("Head").x) {//if its to the right
+						lastPlayerID = data[0].bodyID;
+						currentPlayer = 0;
+					} else {
+						lastPlayerID = data[1].bodyID;
+						currentPlayer = 1;
+					}
+				} else {//pick the left player out of two
+					if (data[0].getJoint("Head").x < data[1].getJoint("Head").x) {//if its to the left
+						lastPlayerID = data[0].bodyID;
+						currentPlayer = 0;
+					} else {
+						lastPlayerID = data[1].bodyID;
+						currentPlayer = 1;
+					}
+				}
+			} else {// more than two players
+				bool shortCircuit = false;
+				for (int i = 0; i < data.Count; i++) {
+					if (data[i].bodyID == lastPlayerID) {
+						//lastplayerid stays the same
+						currentPlayer = i;
+						shortCircuit = true;
+					}
+				}
+				if (!shortCircuit) {
+					int extremeBody = 0;//index of right most or left most body
+					float xMost;//x value of right most or left most body
+					if (IsRightPlayer) {
+						xMost = -9999f;
+					} else {
+						xMost = 9999f;
+					}
+					for (int i = 0; i < data.Count; i++) {//go through all bodies, pick x most
+						if (IsRightPlayer) {
+							if (data[i].getJoint("Head").x > xMost) {
+								extremeBody = i;
+								xMost = data[i].getJoint("Head").x;
+							}
+						} else {
+							if (data[i].getJoint("Head").x < xMost) {
+								extremeBody = i;
+								xMost = data[i].getJoint("Head").x;
+							}
+						}
+					}
+					lastPlayerID = data[extremeBody].bodyID;
+					currentPlayer = extremeBody;
+				}
+			}
+		} else {
+			currentPlayer = -1;
+		}
 
 	}
 
@@ -223,5 +223,8 @@ public class KinectStream : MonoBehaviour
 		}
 	}
 
-
+	public bool certainTracking()
+	{
+		return data.Count == 1;
+	}
 }

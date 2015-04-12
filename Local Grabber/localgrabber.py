@@ -13,7 +13,11 @@ class Root:
 
 def updateHomie():
     while True:
-        globals()['HOMIE'] = urllib.urlopen("http://169.254.233.111:1234").read()
+        try:
+            globals()['HOMIE'] = urllib.urlopen("http://169.254.233.111:1234").read()
+        except:
+            pass
+
         time.sleep(1/50.)
 
 Thread(target = updateHomie).start()
