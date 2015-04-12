@@ -108,7 +108,7 @@ public class KinectStream : MonoBehaviour
 				string frame = lastRequest.text;
 				processFrame (frame);
 			} else {
-				Debug.Log (lastRequest.error);
+//				Debug.Log (lastRequest.error);
 			}
 			lastRequest = new WWW (kinectHTTP);
 		}

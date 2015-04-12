@@ -44,7 +44,7 @@ public class BoardObject : MonoBehaviour {
 		} else { // Only move if not attacking
 			if (this.active) {
 				transform.Translate(direction * movementSpeed * Time.deltaTime);
-				StopCoroutine(attacking);
+
 			}
 		}
 	}
@@ -58,6 +58,7 @@ public class BoardObject : MonoBehaviour {
 			
 			if (opponent.toughness < attack) {
 				opponent.die ();
+				StopCoroutine(attacking);
 			}
 		}
 		// done

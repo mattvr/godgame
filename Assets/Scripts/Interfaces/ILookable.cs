@@ -8,5 +8,6 @@ public interface ILookable {
 	void Looking (GameObject looker);
 	object Activate (GameObject looker);
 	void StopLooking (GameObject looker);
+	bool CanLookAt { get; }
 
 }

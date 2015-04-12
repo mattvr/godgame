@@ -43,7 +43,7 @@ public class Crosshair : MonoBehaviour {
 		float fill = 0;
 
 		// Looking at nothing
-		if (lookable == null) {
+		if (lookable == null || !lookable.CanLookAt) {
 			timeLooking = 0;
 			if (LastLookingAt != null)
 				LastLookingAt.StopLooking(gameObject);

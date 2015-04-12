@@ -11,6 +11,9 @@ public class Card : MonoBehaviour, ILookable {
 	public Type CardType;
 	public CardHand Hand;
 	public bool Selected = false;
+	public string CardName;
+
+	public bool Owner = false;
 	
 	private Vector3 defaultPos;
 
@@ -38,6 +41,12 @@ public class Card : MonoBehaviour, ILookable {
 	public float TimeToActivate {
 		get {
 			return 2.5f;
+		}
+	}
+
+	public bool CanLookAt {
+		get {
+			return Owner;
 		}
 	}
 	#endregion
