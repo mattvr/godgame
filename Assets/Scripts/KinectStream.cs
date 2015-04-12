@@ -59,7 +59,7 @@ public class SkeletalFrame
 public class KinectStream : MonoBehaviour
 {
 	public bool IsRightPlayer;
-	int currentPlayer;
+	int currentPlayer = -1;
 	long lastPlayerID;
 	public static KinectStream Instance;
 	public List<SkeletalFrame> data;
@@ -184,7 +184,7 @@ public class KinectStream : MonoBehaviour
 					}
 				}
 				if (!shortCircuit) {
-					int extremeBody;//index of right most or left most body
+					int extremeBody = 0;//index of right most or left most body
 					float xMost;//x value of right most or left most body
 					if (IsRightPlayer) {
 						xMost = -9999f;
@@ -195,12 +195,12 @@ public class KinectStream : MonoBehaviour
 						if (IsRightPlayer) {
 							if (data[i].getJoint("Head").x > xMost) {
 								extremeBody = i;
-								xMost = data[i].getJoint("Head");
+								xMost = data[i].getJoint("Head").x;
 							}
 						} else {
 							if (data[i].getJoint("Head").x < xMost) {
 								extremeBody = i;
-								xMost = data[i].getJoint("Head");
+								xMost = data[i].getJoint("Head").x;
 							}
 						}
 					}
@@ -223,5 +223,8 @@ public class KinectStream : MonoBehaviour
 		}
 	}
 
-
+	public bool certainTracking()
+	{
+		return data.Count == 1;
+	}
 }
